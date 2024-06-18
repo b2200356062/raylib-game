@@ -1,24 +1,18 @@
 
-#include "raylib.h"
 #include "screens.h"
 
-//----------------------------------------------------------------------------------
-// Module Variables Definition (local)
-//----------------------------------------------------------------------------------
 static int framesCounter = 0;
 static int finishScreen = 0;
 static Camera camera = {0};
 Vector3 cubePosition = { 0 };
-//----------------------------------------------------------------------------------
-// Gameplay Screen Functions Definition
-//----------------------------------------------------------------------------------
+
 
 // Gameplay Screen Initialization logic
 void InitGameplayScreen(void)
 {
     // TODO: Initialize GAMEPLAY screen variables here!
     framesCounter = 0;
-    finishScreen = 0;
+    finishScreen = 2;
     camera.position = (Vector3){ 10.0f, 2.0f, 8.0f };
     camera.target = (Vector3){0.0f, 0.0f, 0.0f};
     camera.up = (Vector3){0.0f, 1.0f, 0.0f};
@@ -35,7 +29,7 @@ void UpdateGameplayScreen(void)
     // Press enter or tap to change to ENDING screen
     if (IsKeyPressed(KEY_ENTER))
     {
-        finishScreen = 1;
+        finishScreen = 0;
     }
 }
 
@@ -63,11 +57,12 @@ void DrawGameplayScreen(void)
 void ClearGameplayScreen(void)
 {
     // TODO: Unload GAMEPLAY screen variables here!
-
+    ShowCursor();
 }
 
 // Gameplay Screen should finish?
 int FinishGameplayScreen(void)
 {
+    
     return finishScreen;
 }

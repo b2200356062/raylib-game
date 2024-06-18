@@ -2,7 +2,6 @@
 #include "screens.h"
 
 // Shared variables
-
 Font font = {0};
 Music music = {0};
 Sound fx = {0};
@@ -32,19 +31,20 @@ int main()
 
     font = LoadFont("resources/mecha.png");
     music = LoadMusicStream("resources/ambient.ogg");
-    fx = LoadSound("resources/coin.way");
+    fx = LoadSound("resources/coin.wav");
 
     // set volume
     PlayMusicStream(music);
-    SetMusicVolume(music, 10.0f);
+    SetMusicVolume(music, 100.0f);
 
     currentScreen = TITLE_SCREEN;
+
     InitTitleScreen();
 
     SetTargetFPS(144);               // Set our game to run at 60 frames-per-second
     
     // Main game loop
-    while (gameRunning)    // Detect window close button or ESC key
+    while (!WindowShouldClose() && gameRunning == true)    // Detect window close button or ESC key
     {
         UpdateDrawFrame();
     }
@@ -57,6 +57,8 @@ int main()
     case GAMEPLAY_SCREEN:
         ClearGameplayScreen();
         break;
+    case OPTIONS_SCREEN:
+        ClearOptionsScreen();
     default: 
         break;
     }
@@ -81,20 +83,22 @@ static void ChangeToScreen(GameScreen screen){
         break;
     case GAMEPLAY_SCREEN:
         ClearGameplayScreen();
-
+    case OPTIONS_SCREEN:
+        ClearOptionsScreen();
     default:
         break;
     }
 
     switch(screen)
     {
-
         case TITLE_SCREEN:
             InitTitleScreen();
             break;
         case GAMEPLAY_SCREEN:
             InitGameplayScreen();
             break;
+        case OPTIONS_SCREEN:
+            InitOptionsScreen();
         default:
             break;
     }
@@ -119,7 +123,7 @@ static void UpdateTransition(void)
             switch (transFromScreen)
             {
                 case TITLE_SCREEN: ClearTitleScreen(); break;
-                //case OPTIONS: UnloadOptionsScreen(); break;
+                case OPTIONS_SCREEN: ClearOptionsScreen(); break;
                 case GAMEPLAY_SCREEN: ClearGameplayScreen(); break;
                 default: break;
             }
@@ -130,7 +134,7 @@ static void UpdateTransition(void)
                 //case LOGO: InitLogoScreen(); break;
                 case TITLE_SCREEN: InitTitleScreen(); break;
                 case GAMEPLAY_SCREEN: InitGameplayScreen(); break;
-                //case ENDING: InitEndingScreen(); break;
+                case OPTIONS_SCREEN: InitOptionsScreen(); break;
                 default: break;
             }
 
@@ -165,38 +169,44 @@ static void DrawTransition(void)
 // Update and draw game frame
 static void UpdateDrawFrame(void)
 {
-    
     // UPDATE MUSİC
     if(!onTransition){
         switch (currentScreen)
         {
-
         case TITLE_SCREEN:
             UpdateTitleScreen();
+
             if(FinishTitleScreen() == 2)
             {
                 TransitionToScreen(GAMEPLAY_SCREEN);
             }
+            else if(FinishTitleScreen() == 1)
+            {
+                TransitionToScreen(OPTIONS_SCREEN);
+            }
             break;
-        // case OPTIONS:
-        //     {
-        //         UpdateOptionsScreen();
+        case OPTIONS_SCREEN:
+            UpdateOptionsScreen();
 
-        //         if (FinishOptionsScreen()) TransitionToScreen(TITLE);
-
-        //     } break;
+            if (FinishOptionsScreen() == 0)
+            {
+                TransitionToScreen(TITLE_SCREEN);
+            }
+            break;
         case GAMEPLAY_SCREEN:
-        {
             UpdateGameplayScreen();
-            if(FinishGameplayScreen() == 1)
+
+            if(FinishGameplayScreen() == 0)
+            {
+                TransitionToScreen(TITLE_SCREEN);
+            }
+            else if(FinishGameplayScreen() == 3)
             {
                 TransitionToScreen(PAUSE_SCREEN);
             }
-        }
+
         // CASE ENDING
-
         default:
-
             break;
         }
     }
@@ -221,9 +231,9 @@ static void UpdateDrawFrame(void)
         case GAMEPLAY_SCREEN:
             DrawGameplayScreen();
             break;
-        // case ENDING_SCREEN:
-            // DrawEndingScreen();
-            // break;
+        case OPTIONS_SCREEN:
+            DrawOptionsScreen();
+            break;
         default:
             break;
         }
@@ -236,7 +246,6 @@ static void UpdateDrawFrame(void)
         DrawFPS(SCREEN_WIDTH - 100, 20);
 
     EndDrawing();
-
 }
 
 static void TransitionToScreen(GameScreen screen)

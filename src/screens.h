@@ -4,8 +4,8 @@
 #include "stdio.h"
 #include "raylib.h"
 
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 #define WINDOWTITLE "window"
 
 typedef enum GameScreen{
@@ -39,7 +39,7 @@ int FinishTitleScreen(void);
 
 
 void InitOptionsScreen(void);
-void UpdatOptionsScreen(void);
+void UpdateOptionsScreen(void);
 void DrawOptionsScreen(void);
 void ClearOptionsScreen(void);
 int FinishOptionsScreen(void);
