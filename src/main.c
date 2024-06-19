@@ -56,7 +56,16 @@ int main(int argc, char *argv[])
 static void Init()
 {
     // init window
-    InitGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOWTITLE);
+    SetConfigFlags(FLAG_VSYNC_HINT);
+    
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "pencere");
+
+    if(!IsWindowReady()){
+        perror("window couldn't initialized!\n");
+        return 1;
+    }
+
+    ToggleFullscreen();
 
     // init audio device
     InitAudioDevice();
@@ -72,12 +81,12 @@ static void Init()
     //fx = LoadSound("resources/coin.wav");
     currentScreen = TITLE_SCREEN;
 
-    InitTitleScreen();
-
     music = LoadMusicStream("resources/biano.mp3");
 
     SetMusicVolume(music, 1.0f);
     PlayMusicStream(music);
+
+    InitTitleScreen();
 }
 
 static void Close()

@@ -18,11 +18,6 @@ void InitOptionsScreen(void)
 
     backTextPos.x = 1010;
     backTextPos.y = 610;
-
-    //music = LoadMusicStream("resources/ambient.ogg");
-
-    //PlayMusicStream(music);
-    //SetMusicVolume(music, 1.0f);
 }
 
 void UpdateOptionsScreen(void)
@@ -39,8 +34,6 @@ void UpdateOptionsScreen(void)
     {
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
     }
-
-    UpdateMusicStream(music);
 
 }
 

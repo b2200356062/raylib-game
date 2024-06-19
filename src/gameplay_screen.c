@@ -55,15 +55,11 @@ void DrawMap()
 // Gameplay Screen Initialization logic
 void InitGameplayScreen(void)
 {
-    // unload and load new music stream
-    UnloadMusicStream(music);
-    // load music stream
-    
 
     // Initialize GAMEPLAY screen variables here!
     framesCounter = 0;
     finishScreen = 2;
-    // X Z Y
+
     camera.position = (Vector3){ 25.0f, 10.0f, 32.0f };
     camera.target = (Vector3){0.0f, 10.0f, 0.0f};
     camera.up = (Vector3){0.0f, 1.0f, 0.0f};
@@ -74,40 +70,40 @@ void InitGameplayScreen(void)
     player.position = camera.position;
     player.direction = camera.target;
 
-
-    HideCursor();
+    DisableCursor();
 }
 
 // Gameplay Screen Update logic
 void UpdateGameplayScreen(void)
 {
-    // TODO: Update GAMEPLAY screen variables here!
+    // Update GAMEPLAY screen variables here!
 
-    mapPosition = realToMapPosition(player.position);
-
-    //printf("map position x: %f, y: %f\n", mapPosition.x, mapPosition.y);
-    //DrawText(, , );
-    //printf("pos x: %f, pos y: %f, pos z: %f\n", player.position.x, player.position.y, player.position.z);
-    
-    
     // Press enter or tap to change to ENDING screen
     if (IsKeyPressed(KEY_ENTER))
     {
         finishScreen = 0;
     }
 
+    UpdateCamera(&camera, CAMERA_FIRST_PERSON);
+  
+    mapPosition = realToMapPosition(player.position);
+
+    //printf("map position x: %f, y: %f\n", mapPosition.x, mapPosition.y);
+    //DrawText(, , );
+    //printf("pos x: %f, pos y: %f, pos z: %f\n", player.position.x, player.position.y, player.position.z);
+
+
     player.position = camera.position;
     player.direction = camera.target;
 
-    
-
     //printf("player position x: %f, y: %f\n", playerPosition.x, playerPosition.y);
+    //camera.target = oldCamDirection;
 }
 
 // Gameplay Screen Draw logic
 void DrawGameplayScreen(void)
 {
-    UpdateCamera(&camera, CAMERA_FIRST_PERSON);
+   
 
     // TODO: Draw GAMEPLAY screen here!
     //DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), PURPLE);
@@ -123,13 +119,14 @@ void DrawGameplayScreen(void)
 
     DrawTextEx(font, "GAMEPLAY SCREEN", pos, font.baseSize*3.0f, 4, MAROON);
     DrawText(TextFormat("ray x: %f, ray y: %f, ray z: %f\n", player.direction.x, player.direction.y, player.direction.z), 100, 100, font.baseSize * 2.0f, BLACK);
+    DrawText(TextFormat("mouse posx: %f, posy: %f", GetMousePosition().x, GetMousePosition().y), 1400, 300, font.baseSize * 3.0f, BLACK);
 }
 
 // Gameplay Screen Unload logic
 void ClearGameplayScreen(void)
 {
     // TODO: Unload GAMEPLAY screen variables here!
-    ShowCursor();
+    EnableCursor();
 }
 
 // Gameplay Screen should finish?

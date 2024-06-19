@@ -7,19 +7,6 @@ static Vector2 mousePosition = {0,0};
 static Rectangle startButton, optionsButton, exitButton;
 static Vector2 startTextPos, optionsTextPos, exitTextPos, menuText;
 
-int InitGameWindow(int width, int height, const char *title)
-{
-    InitWindow(width, height, "pencere");
-
-    if(!IsWindowReady()){
-        perror("window couldn't initialized!\n");
-        return 1;
-    }
-
-    ToggleFullscreen();
-
-    return 0;
-}
 
 void InitTitleScreen()
 {
