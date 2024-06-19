@@ -61,7 +61,7 @@ void InitGameplayScreen(void)
     finishScreen = 2;
 
     camera.position = (Vector3){ 25.0f, 10.0f, 32.0f };
-    camera.target = (Vector3){0.0f, 10.0f, 0.0f};
+    camera.target = (Vector3){60.0f, 10.0f, 0.0f};
     camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     camera.fovy = 60.f;
     camera.projection = CAMERA_PERSPECTIVE;
@@ -118,8 +118,8 @@ void DrawGameplayScreen(void)
     EndMode3D();
 
     DrawTextEx(font, "GAMEPLAY SCREEN", pos, font.baseSize*3.0f, 4, MAROON);
-    DrawText(TextFormat("ray x: %f, ray y: %f, ray z: %f\n", player.direction.x, player.direction.y, player.direction.z), 100, 100, font.baseSize * 2.0f, BLACK);
-    DrawText(TextFormat("mouse posx: %f, posy: %f", GetMousePosition().x, GetMousePosition().y), 1400, 300, font.baseSize * 3.0f, BLACK);
+    //DrawText(TextFormat("ray x: %f, ray y: %f, ray z: %f\n", player.direction.x, player.direction.y, player.direction.z), 100, 100, font.baseSize * 2.0f, BLACK);
+    //DrawText(TextFormat("mouse posx: %f, posy: %f", GetMousePosition().x, GetMousePosition().y), 1400, 300, font.baseSize * 3.0f, BLACK);
 }
 
 // Gameplay Screen Unload logic

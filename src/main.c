@@ -77,11 +77,11 @@ static void Init()
     SetTargetFPS(144); 
 
     // init audios
-    font = LoadFont("resources/mecha.png");
+    font = LoadFont("resources/fonts/mecha.png");
     //fx = LoadSound("resources/coin.wav");
     currentScreen = TITLE_SCREEN;
 
-    music = LoadMusicStream("resources/biano.mp3");
+    music = LoadMusicStream("resources/audio/biano.mp3");
 
     SetMusicVolume(music, 1.0f);
     PlayMusicStream(music);
