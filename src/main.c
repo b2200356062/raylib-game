@@ -1,7 +1,7 @@
 
 #include "screens.h"
 
-// Shared variables
+// shared variables
 Font font = {0};
 Music music = {0};
 Sound fx = {0};
@@ -21,35 +21,20 @@ static void ChangeToScreen(GameScreen screen); // change to screen
 static void TransitionToScreen(GameScreen screen); // request transition
 static void UpdateTransition(void); // update transition effect
 static void DrawTransition(void); // draw transition effect 
+static void Init(void); // inits game
+static void Close(void); // closes game
 
-int main()
+int main(int argc, char *argv[])
 {
-    // Initialization
-    InitGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOWTITLE);
+    Init();
 
-    // init audio
-
-    font = LoadFont("resources/mecha.png");
-    music = LoadMusicStream("resources/ambient.ogg");
-    fx = LoadSound("resources/coin.wav");
-
-    // set volume
-    PlayMusicStream(music);
-    SetMusicVolume(music, 100.0f);
-
-    currentScreen = TITLE_SCREEN;
-
-    InitTitleScreen();
-
-    SetTargetFPS(144);               // Set our game to run at 60 frames-per-second
-    
-    // Main game loop
-    while (!WindowShouldClose() && gameRunning == true)    // Detect window close button or ESC key
+    // main game loop
+    while (!WindowShouldClose() && gameRunning == true)  // detects esc or close 
     {
         UpdateDrawFrame();
     }
 
-    switch (currentScreen)
+    switch (currentScreen)      // change screens;
     {
     case TITLE_SCREEN:
         ClearTitleScreen();
@@ -63,17 +48,47 @@ int main()
         break;
     }
 
-    // De-Initialization
-    UnloadFont(font);
-    UnloadMusicStream(music);
-
-    // Close window and OpenGL context
-    CloseWindow();                  
+    Close();      // de-initialize the game
 
     return 0;
 }
 
+static void Init()
+{
+    // init window
+    InitGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOWTITLE);
 
+    // init audio device
+    InitAudioDevice();
+    if(!IsAudioDeviceReady()){
+        perror("cannot init audio device\n");
+        return;
+    }
+
+    SetTargetFPS(144); 
+
+    // init audios
+    font = LoadFont("resources/mecha.png");
+    //fx = LoadSound("resources/coin.wav");
+    currentScreen = TITLE_SCREEN;
+
+    InitTitleScreen();
+
+    music = LoadMusicStream("resources/biano.mp3");
+
+    SetMusicVolume(music, 1.0f);
+    PlayMusicStream(music);
+}
+
+static void Close()
+{
+    UnloadFont(font);
+    UnloadMusicStream(music);
+    CloseAudioDevice();
+    CloseWindow();         
+}
+
+// without transition
 static void ChangeToScreen(GameScreen screen){
 
     switch (currentScreen)
@@ -105,6 +120,7 @@ static void ChangeToScreen(GameScreen screen){
 
     currentScreen = screen;
 }
+
 
 // Update transition effect (fade-in, fade-out)
 static void UpdateTransition(void)
@@ -169,7 +185,12 @@ static void DrawTransition(void)
 // Update and draw game frame
 static void UpdateDrawFrame(void)
 {
-    // UPDATE MUSİC
+
+    if(currentScreen == TITLE_SCREEN || OPTIONS_SCREEN)
+    {
+        UpdateMusicStream(music);
+    }
+
     if(!onTransition){
         switch (currentScreen)
         {
@@ -215,10 +236,7 @@ static void UpdateDrawFrame(void)
         UpdateTransition();
     }
 
-    // Update
-
-
-    // Draw
+    // draw
     BeginDrawing();
 
         ClearBackground(RAYWHITE);
@@ -247,6 +265,7 @@ static void UpdateDrawFrame(void)
 
     EndDrawing();
 }
+
 
 static void TransitionToScreen(GameScreen screen)
 {

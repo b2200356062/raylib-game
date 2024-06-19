@@ -4,7 +4,7 @@ static Vector2 mousePosition = {0,0};
 static int finishScreen = 1;
 static int framesCounter = 0;
 Rectangle backButton;
-Vector2 backTextPos;
+Vector2 backTextPos = {0,0};
 
 void InitOptionsScreen(void)
 {
@@ -18,6 +18,11 @@ void InitOptionsScreen(void)
 
     backTextPos.x = 1010;
     backTextPos.y = 610;
+
+    //music = LoadMusicStream("resources/ambient.ogg");
+
+    //PlayMusicStream(music);
+    //SetMusicVolume(music, 1.0f);
 }
 
 void UpdateOptionsScreen(void)
@@ -34,7 +39,9 @@ void UpdateOptionsScreen(void)
     {
         SetMouseCursor(MOUSE_CURSOR_DEFAULT);
     }
-    
+
+    UpdateMusicStream(music);
+
 }
 
 void DrawOptionsScreen(void)

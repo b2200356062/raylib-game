@@ -5,7 +5,7 @@ static int framesCounter = 0;
 static int finishScreen = 0;
 static Vector2 mousePosition = {0,0};
 static Rectangle startButton, optionsButton, exitButton;
-static Vector2 startTextPos, optionsTextPos, exitTextPos;
+static Vector2 startTextPos, optionsTextPos, exitTextPos, menuText;
 
 int InitGameWindow(int width, int height, const char *title)
 {
@@ -16,7 +16,7 @@ int InitGameWindow(int width, int height, const char *title)
         return 1;
     }
 
-    //ToggleFullscreen();
+    ToggleFullscreen();
 
     return 0;
 }
@@ -49,6 +49,10 @@ void InitTitleScreen()
 
     exitTextPos.x = SCREEN_WIDTH / 2 - 10;
     exitTextPos.y = SCREEN_HEIGHT / 2 + 40;
+
+    menuText.x = SCREEN_WIDTH / 2 - 100;
+    menuText.y = 200;
+
 }
 
 
@@ -97,7 +101,6 @@ void UpdateTitleScreen(void)
     {
         SetMouseCursor(0);
     }
-
 }
 
 void DrawTitleScreen(void)
@@ -109,8 +112,7 @@ void DrawTitleScreen(void)
     DrawTextEx(font, "Start", startTextPos, font.baseSize*3.0f, 4, BLACK);
     DrawTextEx(font, "Options", optionsTextPos, font.baseSize*3.0f, 4, BLACK);
     DrawTextEx(font, "Quit", exitTextPos, font.baseSize*3.0f, 4, BLACK);
-    
-    DrawText("MAIN MENU", 650, 100, font.baseSize*4.0f, BLACK);
+    DrawTextEx(font, "MAIN MENU", menuText, font.baseSize*5.0f, 4, BLACK);
 }
 
 void ClearTitleScreen(void)
